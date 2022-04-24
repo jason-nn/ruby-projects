@@ -74,17 +74,29 @@ class TicTacToe
     place_symbol(selected_cell)
   end
 
-  def game_over?
-    # check board to see if game is over
-    # print result and set @game_over to true if game is over
-    @game_over = true if @board.flatten.count('X') +
-      @board.flatten.count('O') == 9
+  def is_tie?
+    @board.flatten.count('X') + @board.flatten.count('O') == 9
+  end
 
+  def player1_wins?
+    #
+    @winner = @player1
+  end
+
+  def player2_wins?
+    #
+    @winner = @player2
+  end
+
+  def game_over?
+    @game_over = true if is_tie? || player1_wins? || player2_wins?
     @game_over
   end
 
   def announce_winner
     puts "Game over! It's a tie" if @winner == nil
+    puts "Game over! #{@player1.name} wins" if @winner == @player1
+    puts "Game over! #{@player2.name} wins" if @winner == @player2
     puts
     show_board
   end
