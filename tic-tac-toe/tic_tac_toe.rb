@@ -2,8 +2,8 @@ class TicTacToe
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
-    @board = [%w[a b c], %w[d e f], %w[g h i]]
     @current_player = player1
+    @board = [%w[a b c], %w[d e f], %w[g h i]]
     @game_over = false
 
     puts "Starting Tic Tac Toe game between #{player1.name} and #{player2.name}"
@@ -41,23 +41,9 @@ class TicTacToe
     end
   end
 
-  def make_move
-    puts "It's #{@current_player.name}'s turn"
-    puts
-
-    show_board
+  def get_selected_cell
     print 'Enter the letter of the cell you want to place your symbol on: '
-    selected_cell = gets.chomp
-    puts
-
-    unless @board.flatten.include? selected_cell
-      puts 'That is not a valid input'
-      print 'Enter the letter of the cell you want to place your symbol on: '
-      selected_cell = gets.chomp
-      puts
-    end
-
-    place_symbol(selected_cell)
+    return gets.chomp
   end
 
   def place_symbol(selected_cell)
@@ -66,6 +52,23 @@ class TicTacToe
         @board[row_index][cell_index] = symbol if cell == selected_cell
       end
     end
+  end
+
+  def make_move
+    puts "It's #{@current_player.name}'s turn"
+    puts
+
+    show_board
+    selected_cell = get_selected_cell
+    puts
+
+    unless @board.flatten.include? selected_cell
+      puts 'That is not a valid input'
+      selected_cell = get_selected_cell
+      puts
+    end
+
+    place_symbol(selected_cell)
   end
 
   def game_over?
