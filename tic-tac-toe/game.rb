@@ -3,9 +3,4 @@ require './tic_tac_toe.rb'
 
 2.times { Player.create }
 
-players = Player.list
-
-player1 = players[0]
-player2 = players[1]
-
-TicTacToe.start_game(player1, player2)
+TicTacToe.start_game(Player.list[0], Player.list[1])
