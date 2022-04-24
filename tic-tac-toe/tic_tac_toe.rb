@@ -6,9 +6,6 @@ class TicTacToe
     @board = [%w[a b c], %w[d e f], %w[g h i]]
     @game_over = false
 
-    puts "Starting Tic Tac Toe game between #{player1.name} and #{player2.name}"
-    puts
-
     until game_over?
       make_move
       switch_player unless game_over?
@@ -16,6 +13,9 @@ class TicTacToe
   end
 
   def self.start_game(player1, player2)
+    puts "Starting Tic Tac Toe game between #{player1.name} and #{player2.name}"
+    puts
+
     TicTacToe.new(player1, player2)
   end
 
