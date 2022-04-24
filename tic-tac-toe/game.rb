@@ -8,4 +8,4 @@ players = Player.list
 player1 = players[0]
 player2 = players[1]
 
-TicTacToe.new(player1, player2)
+TicTacToe.start_game(player1, player2)
