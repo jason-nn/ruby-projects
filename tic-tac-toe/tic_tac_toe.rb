@@ -58,15 +58,15 @@ class TicTacToe
   end
 
   def make_move
-    puts "It's #{@current_player.name}'s turn"
+    puts "It's #{@current_player.name}'s turn using the symbol #{symbol}"
     puts
 
     show_board
     selected_cell = get_selected_cell
     puts
 
-    unless @board.flatten.include? selected_cell && selected_cell != 'X' &&
-                                     selected_cell != 'O'
+    if !@board.flatten.include? selected_cell || selected_cell == 'X' ||
+                                 selected_cell == 'O'
       puts 'That is not a valid input'
       selected_cell = get_selected_cell
       puts
