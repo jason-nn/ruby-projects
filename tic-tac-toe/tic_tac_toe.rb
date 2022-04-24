@@ -74,29 +74,54 @@ class TicTacToe
     place_symbol(selected_cell)
   end
 
+  def symbol_wins?(symbol)
+    # horizontal
+    @board.each { |row| return true if row.all? { |cell| cell == symbol } }
+
+    # vertical
+    (0..@board.length - 1).each do |i|
+      return true if @board.all? { |row| row[i] == symbol }
+    end
+
+    # diagonal
+    if (
+         @board[0][0] == symbol && @board[1][1] == symbol &&
+           @board[2][2] == symbol
+       ) ||
+         (
+           @board[2][0] == symbol && @board[1][1] == symbol &&
+             @board[2][0] == symbol
+         )
+      return true
+    end
+
+    # no one wins
+    return false
+  end
+
+  def player1_wins?
+    @winner = @player1 if symbol_wins?('X')
+  end
+
+  def player2_wins?
+    @winner = @player2 if symbol_wins?('O')
+  end
+
   def is_tie?
     @board.flatten.count('X') + @board.flatten.count('O') == 9
   end
 
-  def player1_wins?
-    #
-    @winner = @player1
-  end
-
-  def player2_wins?
-    #
-    @winner = @player2
-  end
-
   def game_over?
-    @game_over = true if is_tie? || player1_wins? || player2_wins?
+    @game_over = true if player1_wins? || player2_wins? || is_tie?
     @game_over
   end
 
   def announce_winner
-    puts "Game over! It's a tie" if @winner == nil
-    puts "Game over! #{@player1.name} wins" if @winner == @player1
-    puts "Game over! #{@player2.name} wins" if @winner == @player2
+    if @winner == nil
+      puts "Game over! It's a tie"
+    else
+      puts "Game over! #{@winner.name} wins"
+    end
     puts
     show_board
   end
