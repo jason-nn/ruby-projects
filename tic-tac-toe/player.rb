@@ -18,12 +18,6 @@ class Player
     name = get_name
     puts
 
-    while name.length < 3
-      puts 'Player name should be at least 3 characters'
-      name = get_name
-      puts
-    end
-
     while @@names.include? name
       puts 'Player name is taken'
       name = get_name
