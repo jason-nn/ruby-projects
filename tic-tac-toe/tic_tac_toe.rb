@@ -5,11 +5,14 @@ class TicTacToe
     @current_player = player1
     @board = [%w[a b c], %w[d e f], %w[g h i]]
     @game_over = false
+    @winner = nil
 
     until game_over?
       make_move
       switch_player unless game_over?
     end
+
+    announce_winner
   end
 
   def self.start_game(player1, player2)
@@ -74,6 +77,15 @@ class TicTacToe
   def game_over?
     # check board to see if game is over
     # print result and set @game_over to true if game is over
+    @game_over = true if @board.flatten.count('X') +
+      @board.flatten.count('O') == 9
+
     @game_over
+  end
+
+  def announce_winner
+    puts "Game over! It's a tie" if @winner == nil
+    puts
+    show_board
   end
 end
