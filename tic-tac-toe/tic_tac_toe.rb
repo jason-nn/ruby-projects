@@ -65,7 +65,8 @@ class TicTacToe
     selected_cell = get_selected_cell
     puts
 
-    unless @board.flatten.include? selected_cell
+    unless @board.flatten.include? selected_cell && selected_cell != 'X' &&
+                                     selected_cell != 'O'
       puts 'That is not a valid input'
       selected_cell = get_selected_cell
       puts
@@ -75,15 +76,15 @@ class TicTacToe
   end
 
   def symbol_wins?(symbol)
-    # horizontal
+    # horizontal win
     @board.each { |row| return true if row.all? { |cell| cell == symbol } }
 
-    # vertical
+    # vertical win
     (0..@board.length - 1).each do |i|
       return true if @board.all? { |row| row[i] == symbol }
     end
 
-    # diagonal
+    # diagonal win
     if (
          @board[0][0] == symbol && @board[1][1] == symbol &&
            @board[2][2] == symbol
