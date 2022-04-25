@@ -12,4 +12,8 @@ module Colorize
   def gray(string)
     string.colorize(background: :light_white)
   end
+
+  def red(string)
+    string.colorize(color: :red)
+  end
 end

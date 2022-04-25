@@ -41,27 +41,60 @@ class Wordle
 
   def try
     guess = get_guess
-
-    check_result(guess)
+    check_guess(guess)
     @tries -= 1
+    check_game_over(guess)
   end
 
   def get_guess
+    puts "You have #{@tries} tries left."
+    puts
     print 'Enter a 5 letter word: '
-    guess = gets.chomp
+    guess = gets.chomp.downcase
     puts
 
     until guess.length == 5 && /^[A-Za-z]+$/.match(guess)
-      puts 'Guess should be 5 letters'
+      puts red('Guess should be 5 letters.')
+      puts
       print 'Enter a 5 letter word: '
-      guess = gets.chomp
+      guess = gets.chomp.downcase
       puts
     end
 
     return guess
   end
 
-  def check_result(guess)
-    #
+  def check_guess(guess)
+    result = ''
+    guess.each_char.with_index do |char, i|
+      if char == @answer[i]
+        result += "#{green(char)}"
+      elsif @answer.include? char
+        result += "#{yellow(char)}"
+      else
+        result += "#{gray(char)}"
+      end
+    end
+    puts result
+    puts
+    # add history
+  end
+
+  def check_game_over(guess)
+    if @answer == guess
+      puts 'Congratulations, you guessed the word!'
+      puts
+      end_game
+    elsif @tries == 0
+      puts 'Sorry! You ran out of tries.'
+      puts
+      puts "The word is #{@answer}."
+      end_game
+    end
+  end
+
+  def end_game
+    @game_over = true
+    # show history
   end
 end
