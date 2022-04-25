@@ -3,7 +3,7 @@
 ## Installation
 
 ```zsh
-git clone https://github.com/jason-nn/ruby-projects.git
+git clone git@github.com:jason-nn/ruby-projects.git
 ```
 
 ```zsh
