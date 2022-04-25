@@ -12,7 +12,14 @@ class Wordle
     @history = []
 
     instructions
+    try until @game_over
   end
+
+  def self.start_game
+    Wordle.new
+  end
+
+  private
 
   def instructions
     puts
@@ -32,11 +39,29 @@ class Wordle
     puts
   end
 
-  def self.start_game
-    Wordle.new
+  def try
+    guess = get_guess
+
+    check_result(guess)
+    @tries -= 1
   end
 
-  private
+  def get_guess
+    print 'Enter a 5 letter word: '
+    guess = gets.chomp
+    puts
 
-  # private methods here
+    until guess.length == 5 && /^[A-Za-z]+$/.match(guess)
+      puts 'Guess should be 5 letters'
+      print 'Enter a 5 letter word: '
+      guess = gets.chomp
+      puts
+    end
+
+    return guess
+  end
+
+  def check_result(guess)
+    #
+  end
 end
