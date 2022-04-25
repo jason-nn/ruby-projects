@@ -66,18 +66,22 @@ class Wordle
 
   def check_guess(guess)
     result = ''
+    history_row = []
     guess.each_char.with_index do |char, i|
       if char == @answer[i]
         result += "#{green(char)}"
+        history_row << "#{green('  ')}"
       elsif @answer.include? char
         result += "#{yellow(char)}"
+        history_row << "#{yellow('  ')}"
       else
         result += "#{gray(char)}"
+        history_row << "#{gray('  ')}"
       end
     end
     puts result
     puts
-    # add history
+    @history << history_row
   end
 
   def check_game_over(guess)
@@ -88,13 +92,17 @@ class Wordle
     elsif @tries == 0
       puts 'Sorry! You ran out of tries.'
       puts
-      puts "The word is #{@answer}."
+      puts "The correct answer is #{@answer}."
+      puts
       end_game
     end
   end
 
   def end_game
     @game_over = true
-    # show history
+    @history.each do |history_row|
+      puts history_row.join(' ')
+      puts
+    end
   end
 end
