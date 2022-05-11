@@ -29,10 +29,9 @@ def save_letter(id, letter)
   File.open("letters/#{id}.html", 'w') { |file| file.puts letter }
 end
 
-puts 'Event Manager initialized'
-
 if File.exists? 'event_attendees.csv'
-  puts 'Writing letters...'
+  puts 'Starting process...'
+  puts
 
   rows =
     CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
@@ -49,7 +48,9 @@ if File.exists? 'event_attendees.csv'
     legislators = legislators_by_zipcode(zipcode)
     letter = erb_template.result(binding)
     save_letter(id, letter)
+    puts 'Saved letter'
   end
 
-  puts 'Process completed'
+  puts
+  puts 'Process finished'
 end
