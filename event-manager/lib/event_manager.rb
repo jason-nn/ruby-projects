@@ -26,13 +26,14 @@ def legislators_by_zipcode(zipcode)
 end
 
 def save_letter(id, letter)
-  filename = "letters/letter_#{id}.html"
-  File.open(filename, 'w') { |file| file.puts letter }
+  File.open("letters/#{id}.html", 'w') { |file| file.puts letter }
 end
 
 puts 'Event Manager initialized'
 
 if File.exists? 'event_attendees.csv'
+  puts 'Writing letters...'
+
   rows =
     CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
 
@@ -47,7 +48,8 @@ if File.exists? 'event_attendees.csv'
     zipcode = clean_zipcode(row[:zipcode])
     legislators = legislators_by_zipcode(zipcode)
     letter = erb_template.result(binding)
-
     save_letter(id, letter)
   end
+
+  puts 'Process completed'
 end
