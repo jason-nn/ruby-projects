@@ -21,7 +21,7 @@ if File.exists? 'event_attendees.csv'
   peak =
     sorted
       .select { |value| value.last == sorted.first.last }
-      .map { |value| value.first }
+      .map { |value| "#{value.first}:00-#{value.first + 1}:00" }
 
   p peak
 
