@@ -12,6 +12,7 @@ end
 
 if File.exists? 'event_attendees.csv'
   puts 'Starting process...'
+  puts
 
   rows =
     CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
