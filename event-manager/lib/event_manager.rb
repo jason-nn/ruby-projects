@@ -1,5 +1,6 @@
 require 'csv'
 require 'google/apis/civicinfo_v2'
+require 'erb'
 
 @civic_info = Google::Apis::CivicinfoV2::CivicInfoService.new
 @civic_info.key = 'AIzaSyClRzDqDh5MsXwnCWi0kOiiBivP6JsSyBw'
@@ -11,15 +12,11 @@ end
 def legislators_by_zipcode(zipcode)
   begin
     return(
-      @civic_info
-        .representative_info_by_address(
-          address: zipcode,
-          levels: 'country',
-          roles: %w[legislatorUpperBody legislatorLowerBody],
-        )
-        .officials
-        .map(&:name)
-        .join(', ')
+      @civic_info.representative_info_by_address(
+        address: zipcode,
+        levels: 'country',
+        roles: %w[legislatorUpperBody legislatorLowerBody],
+      ).officials
     )
   rescue StandardError
     return(
@@ -28,17 +25,29 @@ def legislators_by_zipcode(zipcode)
   end
 end
 
+def save_letter(id, letter)
+  filename = "output/letter#{id}.html"
+  File.open(filename, 'w') { |file| file.puts letter }
+end
+
 puts 'Event Manager initialized'
 
 if File.exists? 'event_attendees.csv'
   rows =
     CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
 
+  template = File.read('template.erb')
+  erb_template = ERB.new(template)
+
+  Dir.mkdir('letters') unless Dir.exist?('output')
+
   rows.each do |row|
+    id = row[0]
     first_name = row[:first_name]
     zipcode = clean_zipcode(row[:zipcode])
     legislators = legislators_by_zipcode(zipcode)
+    letter = erb_template.result(binding)
 
-    puts "#{first_name} #{zipcode} #{legislators}"
+    save_letter(id, letter)
   end
 end
