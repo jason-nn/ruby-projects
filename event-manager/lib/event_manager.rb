@@ -26,7 +26,7 @@ def legislators_by_zipcode(zipcode)
 end
 
 def save_letter(id, letter)
-  filename = "output/letter#{id}.html"
+  filename = "letters/letter_#{id}.html"
   File.open(filename, 'w') { |file| file.puts letter }
 end
 
@@ -36,10 +36,10 @@ if File.exists? 'event_attendees.csv'
   rows =
     CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
 
-  template = File.read('template.erb')
+  template = File.read('template.html.erb')
   erb_template = ERB.new(template)
 
-  Dir.mkdir('letters') unless Dir.exist?('output')
+  Dir.mkdir('letters') unless Dir.exist?('letters')
 
   rows.each do |row|
     id = row[0]
