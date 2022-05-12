@@ -6,16 +6,24 @@ class Hangman
   include Words
   include Colorize
 
-  def initialize
-    @game_over = false
-    @chances = 8
-    @letters = %w[a b c d e f g h i j k l m n o p q r s t u v w x y z]
-    @right_guesses = []
-    @wrong_guesses = []
-    @answer = random_word.split('')
-    @progress = Array.new(@answer.length, '_')
+  def initialize(
+    game_over = false,
+    chances = 8,
+    letters = %w[a b c d e f g h i j k l m n o p q r s t u v w x y z],
+    right_guesses = [],
+    wrong_guesses = [],
+    answer = nil,
+    progress = nil
+  )
+    @game_over = game_over
+    @chances = chances
+    @letters = letters
+    @right_guesses = right_guesses
+    @wrong_guesses = wrong_guesses
+    @answer = answer || random_word.split('')
+    @progress = progress || Array.new(@answer.length, '_')
 
-    instructions
+    instructions if right_guesses.length == 0 && wrong_guesses.length == 0
     try until @game_over
   end
 
@@ -54,7 +62,7 @@ class Hangman
     puts
 
     until answer == 'y' || answer == 'n'
-      puts red('Invalid input.')
+      puts red('Invalid input. Try again.')
       puts
       print 'Would you like to save your progress before moving forward? (y/n) '
       answer = gets.chomp
@@ -62,6 +70,7 @@ class Hangman
     end
 
     if answer == 'y'
+      Dir.mkdir('saved') unless File.exists? 'saved'
       file = File.open("saved/#{@answer.map { |x| x.ord }.join('_')}.txt", 'w')
       file.puts JSON.dump(
                   {
