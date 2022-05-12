@@ -51,6 +51,9 @@ class Hangman
 
   def try
     ask_save
+    show_chances_left
+    show_progress
+    show_letters
     guess = get_guess
     check_guess(guess)
     check_game_over
@@ -88,22 +91,6 @@ class Hangman
   end
 
   def get_guess
-    puts "You have #{@chances} chances left."
-    puts
-    puts @progress.join(' ')
-    puts
-    @letters.each do |letter|
-      if @right_guesses.include? letter
-        print green(letter)
-      elsif @wrong_guesses.include? letter
-        print red(letter)
-      else
-        print letter
-      end
-      print(' ')
-    end
-    puts
-    puts
     print 'Enter a letter: '
     guess = gets.chomp.downcase
     puts
@@ -118,6 +105,31 @@ class Hangman
     end
 
     return guess
+  end
+
+  def show_chances_left
+    puts "You have #{@chances} chances left."
+    puts
+  end
+
+  def show_progress
+    puts @progress.join(' ')
+    puts
+  end
+
+  def show_letters
+    @letters.each do |letter|
+      if @right_guesses.include? letter
+        print green(letter)
+      elsif @wrong_guesses.include? letter
+        print red(letter)
+      else
+        print letter
+      end
+      print(' ')
+    end
+    puts
+    puts
   end
 
   def check_guess(guess)
