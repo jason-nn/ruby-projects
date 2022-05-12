@@ -1,5 +1,6 @@
 require './words.rb'
 require './colorize.rb'
+require 'json'
 
 class Hangman
   include Words
@@ -36,14 +37,45 @@ class Hangman
     puts
     puts 'Colored letters have been selected already and cannot be reselected.'
     puts
-    puts 'Correct guesses will be colored green while incorrect guesses will be colored red.'
+    puts "Correct guesses will be colored #{green('green')} while incorrect guesses will be colored #{red('red')}."
     puts
   end
 
   def try
+    ask_save
     guess = get_guess
     check_guess(guess)
     check_game_over
+  end
+
+  def ask_save
+    print 'Would you like to save your progress before moving forward? (y/n) '
+    answer = gets.chomp
+    puts
+
+    until answer == 'y' || answer == 'n'
+      puts red('Invalid input.')
+      puts
+      print 'Would you like to save your progress before moving forward? (y/n) '
+      answer = gets.chomp
+      puts
+    end
+
+    if answer == 'y'
+      file = File.open("saved/#{@answer.join('')}.txt", 'w')
+      file.puts JSON.dump(
+                  {
+                    game_over: @game_over,
+                    chances: @chances,
+                    letters: @letters,
+                    right_guesses: @right_guesses,
+                    wrong_guesses: @wrong_guesses,
+                    answer: @answer,
+                    progress: @progress,
+                  },
+                )
+      file.close
+    end
   end
 
   def get_guess
@@ -115,5 +147,3 @@ class Hangman
     @game_over = true
   end
 end
-
-Hangman.new
