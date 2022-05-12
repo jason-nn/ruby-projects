@@ -62,7 +62,7 @@ class Hangman
     end
 
     if answer == 'y'
-      file = File.open("saved/#{@answer.join('')}.txt", 'w')
+      file = File.open("saved/#{@answer.map { |x| x.ord }.join('_')}.txt", 'w')
       file.puts JSON.dump(
                   {
                     game_over: @game_over,
